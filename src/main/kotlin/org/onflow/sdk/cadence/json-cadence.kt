@@ -40,6 +40,7 @@ const val TYPE_DICTIONARY = "Dictionary"
 const val TYPE_ADDRESS = "Address"
 const val TYPE_PATH = "Path"
 const val TYPE_CAPABILITY = "Capability"
+const val TYPE_TYPE = "Type"
 const val TYPE_STRUCT = "Struct"
 const val TYPE_RESOURCE = "Resource"
 const val TYPE_EVENT = "Event"
@@ -83,6 +84,7 @@ const val TYPE_ENUM = "Enum"
         Type(value = AddressField::class, name = TYPE_ADDRESS),
         Type(value = PathField::class, name = TYPE_PATH),
         Type(value = CapabilityField::class, name = TYPE_CAPABILITY),
+        Type(value = TypeField::class, name = TYPE_TYPE),
         Type(value = StructField::class, name = TYPE_STRUCT),
         Type(value = ResourceField::class, name = TYPE_RESOURCE),
         Type(value = EventField::class, name = TYPE_EVENT),
@@ -178,6 +180,9 @@ open class PathField(value: PathValue) : Field<PathValue>(TYPE_PATH, value)
 
 open class CapabilityValue(val path: String, val address: String, val borrowType: String)
 open class CapabilityField(value: CapabilityValue) : Field<CapabilityValue>(TYPE_CAPABILITY, value)
+
+open class TypeValue(val staticType: String)
+open class TypeField(value: TypeValue) : Field<TypeValue>(TYPE_TYPE, value)
 
 open class CompositeField(type: String, value: CompositeValue) : Field<CompositeValue>(type, value) {
     val id: String? @JsonIgnore get() = value?.id

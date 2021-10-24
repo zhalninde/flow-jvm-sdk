@@ -10,6 +10,7 @@ import org.onflow.sdk.cadence.JsonCadenceConversion
 import org.onflow.sdk.cadence.JsonCadenceConverter
 import org.onflow.sdk.cadence.StringField
 import org.onflow.sdk.cadence.StructField
+import org.onflow.sdk.cadence.TypeField
 import org.onflow.sdk.cadence.marshall
 import org.onflow.sdk.cadence.unmarshall
 import org.onflow.sdk.crypto.Crypto
@@ -112,6 +113,25 @@ class ScriptTest {
         assertEquals(BigDecimal("1234"), struct.balance.stripTrailingZeros())
         assertEquals(HashAlgorithm.SHA3_256, struct.hashAlgorithm)
         assertTrue(struct.isValid)
+    }
+
+    @Test
+    fun `Can parse 'Type' values`() {
+        val accessAPI = TestUtils.newEmulatorAccessApi()
+        val staticType = "AnyStruct"
+
+        val result = accessAPI.simpleFlowScript {
+            script {
+                """
+                    pub fun main(): AnyStruct {
+                        return Type<AnyStruct>()
+                    }
+                """
+            }
+        }
+
+        assertTrue(result.jsonCadence is TypeField)
+        assertEquals(staticType, (result.jsonCadence as? TypeField)?.value?.staticType)
     }
 
     @Test
